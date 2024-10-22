@@ -33,7 +33,7 @@
      
     });
 
-    //loadPixi();
+    loadPixi();
 
 
     /*
