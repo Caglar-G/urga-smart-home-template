@@ -16,12 +16,16 @@
   })*/
 
   let error:string = "";
-  let home:Home = new Home();
-
+  const home:Home = new Home();
+  let deviceInfoList:Array<DeviceInfo> = [];
   onMount(() => {
 
-    home.getDevices();
-
+    home.getDevices((ev)=>{
+      deviceInfoList = ev;
+      for (const element of deviceInfoList) {
+        console.log(element);
+      }
+    });
 
     /*
     if (id) {
