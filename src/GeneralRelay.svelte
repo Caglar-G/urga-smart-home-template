@@ -6,9 +6,10 @@
   import { Cluster, Device, Home } from "urgasmartlib";
   import type { DeviceInfo, Message } from "urgasmartlib";
 
-  import { onMount } from 'svelte';
+  import { onDestroy, onMount } from 'svelte';
 	import Fa from 'svelte-fa';
 	import { faPowerOff } from '@fortawesome/free-solid-svg-icons';
+  import * as PIXI from 'pixi.js';
 
   /*
   onMount(()=>{
@@ -18,6 +19,10 @@
   let error:string = "";
   const home:Home = new Home();
   let deviceInfoList:Array<DeviceInfo> = [];
+
+  let canvasContainer: HTMLDivElement;
+  let app: PIXI.Application;
+
   onMount(() => {
 
     home.getDevices((ev)=>{
@@ -25,6 +30,23 @@
       for (const element of deviceInfoList) {
         console.log(JSON.stringify(element));
       }
+      app = new PIXI.Application({
+        width: 800,  // Canvas genişliği
+        height: 600, // Canvas yüksekliği
+        backgroundColor: 0x1099bb,
+      });
+
+      // PixiJS sahnesini DOM'a ekleyin
+      canvasContainer.appendChild(app.view);
+
+      // Bir grafik nesnesi ekleyelim (örnek)
+      const circle = new PIXI.Graphics();
+      circle.beginFill(0xff0000);
+      circle.drawCircle(100, 100, 50);
+      circle.endFill();
+
+      // Çizilen nesneyi sahneye ekle
+      app.stage.addChild(circle);
     });
 
     /*
@@ -49,82 +71,27 @@
 
   });
 
-  function ColorChange(_status:string){
-    let color = "grey";
-    switch (_status) {
-      case "ON":
-        color = `#55B785`;
-        break;
-      case "OFF":
-        color = `brown`;
-        break;
-      default:
-        color = `grey`;
-        break;
-    }
-    return `color:${color};`
-  }
+  onDestroy(() => {
+    // Uygulama kapanırken temizle
+    app.destroy(true, { children: true });
+  });
 
-  function ToogleCommand(){
-   
     /*
     device.command("0x0006", 0, "0x02", "" , (message:Message) => {
       //onOffStatus = message.payloadString;
       console.log("Gonderildi");
     });*/
-  }
-
-  //const spec = new Cluster("38d83101-e148-4a54-848b-faa5d074e481");
-
-  //let switch1 = spec.ON_OFF("1",(self)=>{ switch1 = self;}); on:click={/*switch1.commands.Toggle*/} color={/*switch1.attributes.OnOff === "ON" ? "#55B785" : "#C33175"*/}
 </script>
 
 <main>
-  <div>
-      <!-- svelte-ignore a11y-click-events-have-key-events -->
-      <!-- svelte-ignore a11y-no-static-element-interactions 
-    <div class="m-auto w-fit" style="{ColorChange(onOffStatus)}" on:click={ToogleCommand}>
-      <Fa icon={faPowerOff} size="8x" />
-    </div>
-  </div>
-  {#if deviceInfo != null}
-    <h1>{deviceInfo.deviceName}</h1>
-    <h2>{onOffStatus}</h2>
-  {/if}-->
-
-  {#if error != ""}
-    <div>{error}</div>
-  {/if}
-
-  <!--
-  <div class="card">
-    <Counter />
-  </div>
-
-  <p>
-    Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank" rel="noreferrer">SvelteKit</a>, the official Svelte app framework powered by Vite!
-  </p>
-
-  <p class="read-the-docs">
-    Click on the Vite and Svelte logos to learn more
-  </p>
-  -->
+  <div bind:this={canvasContainer}></div>
 </main>
 
 <style>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
-  }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-  }
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00aa);
-  }
-  .read-the-docs {
-    color: #888;
+  div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
   }
 </style>
