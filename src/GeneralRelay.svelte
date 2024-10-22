@@ -3,7 +3,7 @@
   import viteLogo from '/vite.svg'
   import Counter from './lib/Counter.svelte'
 
-  import { Cluster, Device } from "urgasmartlib";
+  import { Cluster, Device, Home } from "urgasmartlib";
   import type { DeviceInfo, Message } from "urgasmartlib";
 
   import { onMount } from 'svelte';
@@ -16,14 +16,14 @@
   })*/
 
   let error:string = "";
-  let device:Device;
-  let deviceInfo:DeviceInfo|null = null;
-  let onOffStatus:string="";
+  let home:Home;
 
   onMount(() => {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('id');
 
+    home.getDevices();
+
+
+    /*
     if (id) {
         // id varsa işlemler yap
         console.log("id bulundu", id);
@@ -41,7 +41,8 @@
     } else {
         // id yoksa alternatif bir işlem yap
         error = "id bulunamadi";
-    }
+    }*/
+
   });
 
   function ColorChange(_status:string){
@@ -62,10 +63,11 @@
 
   function ToogleCommand(){
    
+    /*
     device.command("0x0006", 0, "0x02", "" , (message:Message) => {
       //onOffStatus = message.payloadString;
       console.log("Gonderildi");
-    });
+    });*/
   }
 
   //const spec = new Cluster("38d83101-e148-4a54-848b-faa5d074e481");
@@ -76,7 +78,7 @@
 <main>
   <div>
       <!-- svelte-ignore a11y-click-events-have-key-events -->
-      <!-- svelte-ignore a11y-no-static-element-interactions -->
+      <!-- svelte-ignore a11y-no-static-element-interactions 
     <div class="m-auto w-fit" style="{ColorChange(onOffStatus)}" on:click={ToogleCommand}>
       <Fa icon={faPowerOff} size="8x" />
     </div>
@@ -84,7 +86,7 @@
   {#if deviceInfo != null}
     <h1>{deviceInfo.deviceName}</h1>
     <h2>{onOffStatus}</h2>
-  {/if}
+  {/if}-->
 
   {#if error != ""}
     <div>{error}</div>
