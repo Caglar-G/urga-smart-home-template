@@ -59,15 +59,28 @@
   });
 
   onDestroy(() => {
-    // Uygulama kapanırken temizle
-    app.destroy(true, { children: true });
+    if (app) {
+      app.destroy(true, { children: true, texture: true});
+    }
   });
+
+  let offTexture:any;
+  let onTexture:any;
+  let lampSprite: PIXI.Sprite;
+  let isOn = false;
 
 
   async function loadPixi() {
+    /*
+    offTexture = await PIXI.Assets.load('https://pixijs.com/assets/bunny.png');
+    onTexture = await PIXI.Assets.load('https://pixijs.com/assets/bunny.png');*/
+    offTexture = await PIXI.Assets.load('/Bulb_OFF.png');
+    onTexture = await PIXI.Assets.load('/Bulb_ON.png');
+    //PIXI.Texture.from('path/to/lamp-off.png');
+
     console.log("pixi start load")
     // Create a new application
-    const app = new PIXI.Application();
+    app = new PIXI.Application();
 
     // Initialize the application
     await app.init({ background: '#1099bb', resizeTo: window });
@@ -80,34 +93,47 @@
 
     app.stage.addChild(container);
 
-    // Load the bunny texture
-    const texture = await PIXI.Assets.load('https://pixijs.com/assets/bunny.png');
+    lampSprite = new PIXI.Sprite(onTexture);
 
-    // Create a 5x5 grid of bunnies in the container
-    for (let i = 0; i < 25; i++)
-    {
-        const bunny = new PIXI.Sprite(texture);
+    
+    lampSprite.anchor.set(0.5);
+    lampSprite.x = app.canvas.width / 2;
+    lampSprite.y = app.canvas.height / 2;
+    /*
+    lampSprite.x = app.view.width / 2;
+    lampSprite.y = app.view.height / 2;*/
+    
 
-        bunny.x = (i % 5) * 40;
-        bunny.y = Math.floor(i / 5) * 40;
-        container.addChild(bunny);
-    }
+    lampSprite.interactive = true;
+    //lampSprite.buttonMode = true;
+    lampSprite.on('pointertap', toggleLamp);
+
+    container.addChild(lampSprite);
 
     // Move the container to the center
+    /*
     container.x = app.screen.width / 2;
     container.y = app.screen.height / 2;
 
     // Center the bunny sprites in local container coordinates
     container.pivot.x = container.width / 2;
-    container.pivot.y = container.height / 2;
+    container.pivot.y = container.height / 2;*/
 
     // Listen for animate update
     app.ticker.add((time) =>
     {
         // Continuously rotate the container!
         // * use delta to create frame-independent transform *
-        container.rotation -= 0.01 * time.deltaTime;
+        //container.rotation -= 0.01 * time.deltaTime;
     });
+  }
+
+  function toggleLamp() {
+    isOn = !isOn;
+    lampSprite.texture = isOn ? onTexture : offTexture;
+    lampSprite.anchor.set(0.5);
+    lampSprite.x = app.canvas.width / 2;
+    lampSprite.y = app.canvas.height / 2;
   }
 
     /*
