@@ -33,7 +33,7 @@
      
     });
 
-    loadPixi();
+    //loadPixi();
 
 
     /*
@@ -78,6 +78,7 @@
     onTexture = await PIXI.Assets.load('/Bulb_ON.png');
     //PIXI.Texture.from('path/to/lamp-off.png');
 
+    
     console.log("pixi start load")
     // Create a new application
     app = new PIXI.Application();
@@ -145,6 +146,7 @@
 
 <main>
   <div bind:this={canvasContainer}></div>
+  <img id="myImage" src="Bulb_ON.png" style="" />
 </main>
 
 <style>
