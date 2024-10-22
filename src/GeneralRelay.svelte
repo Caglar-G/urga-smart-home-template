@@ -30,24 +30,11 @@
       for (const element of deviceInfoList) {
         console.log(JSON.stringify(element));
       }
-      app = new PIXI.Application({
-        width: 800,  // Canvas genişliği
-        height: 600, // Canvas yüksekliği
-        backgroundColor: 0x1099bb,
-      });
-
-      // PixiJS sahnesini DOM'a ekleyin
-      canvasContainer.appendChild(app.view);
-
-      // Bir grafik nesnesi ekleyelim (örnek)
-      const circle = new PIXI.Graphics();
-      circle.beginFill(0xff0000);
-      circle.drawCircle(100, 100, 50);
-      circle.endFill();
-
-      // Çizilen nesneyi sahneye ekle
-      app.stage.addChild(circle);
+     
     });
+
+    loadPixi();
+
 
     /*
     if (id) {
@@ -75,6 +62,53 @@
     // Uygulama kapanırken temizle
     app.destroy(true, { children: true });
   });
+
+
+  async function loadPixi() {
+    console.log("pixi start load")
+    // Create a new application
+    const app = new PIXI.Application();
+
+    // Initialize the application
+    await app.init({ background: '#1099bb', resizeTo: window });
+
+    // Append the application canvas to the document body
+    document.body.appendChild(app.canvas);
+
+    // Create and add a container to the stage
+    const container = new PIXI.Container();
+
+    app.stage.addChild(container);
+
+    // Load the bunny texture
+    const texture = await PIXI.Assets.load('https://pixijs.com/assets/bunny.png');
+
+    // Create a 5x5 grid of bunnies in the container
+    for (let i = 0; i < 25; i++)
+    {
+        const bunny = new PIXI.Sprite(texture);
+
+        bunny.x = (i % 5) * 40;
+        bunny.y = Math.floor(i / 5) * 40;
+        container.addChild(bunny);
+    }
+
+    // Move the container to the center
+    container.x = app.screen.width / 2;
+    container.y = app.screen.height / 2;
+
+    // Center the bunny sprites in local container coordinates
+    container.pivot.x = container.width / 2;
+    container.pivot.y = container.height / 2;
+
+    // Listen for animate update
+    app.ticker.add((time) =>
+    {
+        // Continuously rotate the container!
+        // * use delta to create frame-independent transform *
+        container.rotation -= 0.01 * time.deltaTime;
+    });
+  }
 
     /*
     device.command("0x0006", 0, "0x02", "" , (message:Message) => {
