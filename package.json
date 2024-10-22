@@ -1,0 +1,36 @@
+{
+  "name": "urga-smart-component-template",
+  "version": "0.0.23",
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev --host=0.0.0.0 --port=5175",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-check --tsconfig ./tsconfig.json && tsc -p tsconfig.node.json",
+    "postinstall": "node copyFiles.cjs",
+    "release": "vite build && npm version patch --no-git-tag-version && npm publish --access public",
+    "clean": "npm cache clean --force"
+  },
+  "files": [
+    "dist",
+    "copyFiles.cjs"
+  ],
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^3.1.1",
+    "@tsconfig/svelte": "^5.0.4",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "svelte": "^4.2.18",
+    "svelte-check": "^3.8.5",
+    "tailwindcss": "^3.4.13",
+    "tslib": "^2.6.3",
+    "typescript": "^5.5.3",
+    "vite": "^5.4.0"
+  },
+  "dependencies": {
+    "@fortawesome/free-brands-svg-icons": "^6.6.0",
+    "@fortawesome/free-solid-svg-icons": "^6.6.0",
+    "svelte-fa": "^4.0.2",
+    "urgasmartlib": "^0.1.11"
+  }
+}
