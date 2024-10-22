@@ -77,6 +77,45 @@
     const imgElement = document.getElementById('bulbOn')as HTMLImageElement;
     const imgElement2 = document.getElementById('bulbOff')as HTMLImageElement;
 
+    let img1load = false;
+    let img2load = false;
+    imgElement.onload = () => {
+      console.log("asdf")
+      img1load = true;
+      loadedImage();
+    }
+    imgElement2.onload = () => {
+      console.log("asdf")
+      img2load = true;
+      loadedImage();
+    }
+
+    const loadedImage = async () => {
+      if(img1load == false ){
+        return;
+      }
+      if(img2load == false ){
+        return;
+      }     
+
+      /*
+       // Görseli bir canvas'a çevir
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+
+    canvas.width = imgElement.width;
+    canvas.height = imgElement.height;
+    context?.drawImage(imgElement, 0, 0); // Görseli canvas'a çiz
+
+
+    // Görseli bir canvas'a çevir
+    const canvas2 = document.createElement('canvas');
+    const context2 = canvas.getContext('2d');
+
+    canvas2.width = imgElement2.width;
+    canvas2.height = imgElement2.height;
+    context2?.drawImage(imgElement2, 0, 0); // Görseli canvas'a çiz*/
+
    
     offTexture = PIXI.Texture.from(imgElement2);//await PIXI.Assets.load('/Bulb_OFF.png');
     onTexture = PIXI.Texture.from(imgElement);//await PIXI.Assets.load('/Bulb_ON.png');
@@ -104,13 +143,8 @@
     lampSprite.anchor.set(0.5);
     lampSprite.x = app.canvas.width / 2;
     lampSprite.y = app.canvas.height / 2;
-    /*
-    lampSprite.x = app.view.width / 2;
-    lampSprite.y = app.view.height / 2;*/
-    
 
     lampSprite.interactive = true;
-    //lampSprite.buttonMode = true;
     lampSprite.on('pointertap', toggleLamp);
 
     container.addChild(lampSprite);
@@ -131,6 +165,13 @@
         // * use delta to create frame-independent transform *
         //container.rotation -= 0.01 * time.deltaTime;
     });
+
+
+    }
+
+    return;
+    
+   
   }
 
   function toggleLamp() {
