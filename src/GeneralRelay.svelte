@@ -74,8 +74,12 @@
     /*
     offTexture = await PIXI.Assets.load('https://pixijs.com/assets/bunny.png');
     onTexture = await PIXI.Assets.load('https://pixijs.com/assets/bunny.png');*/
-    offTexture = await PIXI.Assets.load('/Bulb_OFF.png');
-    onTexture = await PIXI.Assets.load('/Bulb_ON.png');
+    const imgElement = document.getElementById('bulbOn')as HTMLImageElement;
+    const imgElement2 = document.getElementById('bulbOff')as HTMLImageElement;
+
+   
+    offTexture = PIXI.Texture.from(imgElement2);//await PIXI.Assets.load('/Bulb_OFF.png');
+    onTexture = PIXI.Texture.from(imgElement);//await PIXI.Assets.load('/Bulb_ON.png');
     //PIXI.Texture.from('path/to/lamp-off.png');
 
     
@@ -146,7 +150,8 @@
 
 <main>
   <div bind:this={canvasContainer}></div>
-  <img id="myImage" src="Bulb_ON.png" style="" />
+  <img id="bulbOn" src="Bulb_ON.png" style="display: none;" />
+  <img id="bulbOff" src="Bulb_OFF.png" style="display: none;" />
 </main>
 
 <style>
