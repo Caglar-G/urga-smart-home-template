@@ -16,7 +16,7 @@
   })*/
 
   let error:string = "";
-  let home:Home;
+  let home:Home = new Home();
 
   onMount(() => {
 
