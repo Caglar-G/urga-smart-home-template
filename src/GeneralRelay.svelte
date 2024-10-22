@@ -23,7 +23,7 @@
     home.getDevices((ev)=>{
       deviceInfoList = ev;
       for (const element of deviceInfoList) {
-        console.log(element);
+        console.log(JSON.stringify(element));
       }
     });
 
