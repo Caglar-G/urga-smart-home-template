@@ -137,7 +137,7 @@
 
     app.stage.addChild(container);
 
-    lampSprite = new PIXI.Sprite(onTexture);
+    lampSprite = new PIXI.Sprite(offTexture);
 
     
     lampSprite.anchor.set(0.5);
